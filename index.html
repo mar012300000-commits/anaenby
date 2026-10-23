@@ -1,0 +1,33 @@
+<!doctype html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>anaenby</title>
+  <link rel="icon" href="images/brand/favicon.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="css/style.css">
+  <script type="importmap">
+    {
+      "imports": {
+        "three": "./libs/three/three.module.js",
+        "three/addons/": "./libs/three/addons/"
+      }
+    }
+  </script>
+</head>
+<body class="home">
+  <canvas id="scene"></canvas>
+
+  <!-- intro: the wordmark first, then it docks at the top and the scan comes in -->
+  <div class="brand" id="brand">
+    <svg class="brand__mark" viewBox="17 7 501 121" role="img" aria-label="anaenby">
+      <path fill="currentColor" fill-rule="evenodd" d="M188 7H518V33H352V55H493V79H352V103H518V128H308L289 103H150L116 128H17ZM239 38L270 78H185Z"/>
+    </svg>
+    <div id="loader"><div id="progress"></div></div>
+  </div>
+
+  <div id="fade"></div>
+
+  <script type="module" src="js/main.js"></script>
+</body>
+</html>

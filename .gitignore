@@ -1,0 +1,9 @@
+# only the site itself goes to GitHub Pages; local tools and archives stay on this PC
+backups/
+Scaniverse */
+deploy/
+deploy.bat
+server.ps1
+start.bat
+домен.txt
+.claude/

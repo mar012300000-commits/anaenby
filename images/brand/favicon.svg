@@ -1,0 +1,5 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64">
+  <rect width="64" height="64" fill="#0a0a0a"/>
+  <!-- anaenby sign scaled into the square with an even margin -->
+  <path transform="translate(4 24.6) scale(.1118) translate(-17 -7)" fill="#ffffff" fill-rule="evenodd" d="M188 7H518V33H352V55H493V79H352V103H518V128H308L289 103H150L116 128H17ZM239 38L270 78H185Z"/>
+</svg>

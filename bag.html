@@ -1,0 +1,103 @@
+<!doctype html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Bag — anaenby</title>
+  <link rel="icon" href="images/brand/favicon.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="css/style.css">
+  <script src="js/bag.js"></script>
+</head>
+<body class="page">
+  <nav class="menu">
+    <a href="index.html" class="back" aria-label="Home">←</a>
+    <a href="shop.html">Shop</a>
+    <a href="persons.html">Persons</a>
+    <a href="project.html">Project</a>
+  </nav>
+  <a class="baglink active" href="bag.html">Bag <span data-bag-count>0</span></a>
+
+  <div class="bar">
+    <div class="bar__cell">Bag</div>
+    <div class="bar__cell"><span data-bag-count>0</span> items</div>
+    <div class="bar__cell bar__cell--grow"></div>
+  </div>
+
+  <main class="bag">
+    <section class="bag__lines" id="lines" aria-label="Items in your bag"></section>
+
+    <aside class="bag__summary">
+      <div class="pdp__cell pdp__row"><span class="tech">Subtotal</span><span id="subtotal">€ 0</span></div>
+      <div class="pdp__cell pdp__row"><span class="tech">Delivery</span><span class="pdp__muted"><span class="x">xxxxxxxx</span></span></div>
+      <div class="pdp__cell pdp__row bag__total"><span class="tech">Total</span><span id="total">€ 0</span></div>
+      <div class="pdp__cell">
+        <button type="button" class="pdp__buy" id="checkout">Checkout</button>
+        <p class="status" id="checkout-hint" hidden>Payment is not connected yet. <span class="x">xxxxxxxx</span></p>
+      </div>
+    </aside>
+  </main>
+
+  <template id="line-tpl">
+    <article class="line">
+      <a class="line__img"><img alt=""></a>
+      <div class="line__info">
+        <a class="line__name"></a>
+        <span class="tech pdp__muted">Size / <span class="x line__size"></span></span>
+        <span class="line__price"></span>
+      </div>
+      <div class="line__qty" role="group" aria-label="Quantity">
+        <button type="button" class="qty-btn" data-step="-1" aria-label="One less">−</button>
+        <span class="qty-n"></span>
+        <button type="button" class="qty-btn" data-step="1" aria-label="One more">+</button>
+      </div>
+      <button type="button" class="line__remove link">Remove</button>
+    </article>
+  </template>
+
+  <script>
+    const linesEl = document.getElementById('lines');
+    const tpl = document.getElementById('line-tpl');
+
+    function render() {
+      const items = Bag.read();
+      linesEl.replaceChildren();
+
+      if (!items.length) {
+        linesEl.innerHTML =
+          '<div class="bag__empty"><p class="tech">Bag is empty.</p>' +
+          '<p>Objects you add will appear here.</p>' +
+          '<a class="link" href="shop.html">Open the shop ↗</a></div>';
+      }
+
+      items.forEach((item, i) => {
+        const el = tpl.content.firstElementChild.cloneNode(true);
+        el.querySelector('.line__img').href = item.href;
+        el.querySelector('img').src = item.img;
+        el.querySelector('img').alt = item.name;
+        el.querySelector('.line__name').href = item.href;
+        el.querySelector('.line__name').textContent = item.name;
+        el.querySelector('.line__size').textContent = item.sizeLabel;
+        el.querySelector('.line__price').textContent = Bag.money(item.price);
+        el.querySelector('.qty-n').textContent = item.qty;
+        el.querySelectorAll('.qty-btn').forEach((b) => b.addEventListener('click', () => {
+          Bag.setQty(i, item.qty + Number(b.dataset.step));
+        }));
+        el.querySelector('.line__remove').addEventListener('click', () => Bag.remove(i));
+        linesEl.appendChild(el);
+      });
+
+      const sub = Bag.subtotal();
+      document.getElementById('subtotal').textContent = sub;
+      document.getElementById('total').textContent = items.length ? Bag.UNKNOWN : sub; // delivery not known yet
+      document.getElementById('checkout').disabled = !items.length;
+    }
+
+    document.getElementById('checkout').addEventListener('click', () => {
+      document.getElementById('checkout-hint').hidden = false;
+    });
+
+    Bag.subscribe(render);
+    render();
+  </script>
+</body>
+</html>
